@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My To-Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            padding: 15px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1, h2 {
+            color: #222;
+        }
+
+        form {
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            width: 100%;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        li {
+            background: white;
+            padding: 14px 12px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .delete-btn {
+            color: #dc3545;
+            font-size: 1.4rem;
+            text-decoration: none;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        label {
+            flex-grow: 1;
+            margin-left: 8px;
+        }
+
+        .score {
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ greeting }}</h1>
+
+    <div class="score">
+        Completed: {{ completed_count }} of {{ total_tasks }}
+    </div>
+
+    <form method="POST">
+        <!-- Add Tasks -->
+        <input type="text" name="tasks" placeholder="Enter task 1">
+        <input type="text" name="tasks" placeholder="Enter task 2">
+        <input type="text" name="tasks" placeholder="Enter task 3">
+        <input type="text" name="tasks" placeholder="Enter task 4">
+        <input type="text" name="tasks" placeholder="Enter task 5">
+        <button type="submit">Add Tasks</button>
+    </form>
+
+    <form method="POST">
+        <h2>Your Tasks</h2>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <input type="checkbox" name="completed" value="{{ loop.index0 }}" {% if task.completed %}checked{% endif %}>
+                    <label {% if task.completed %} style="text-decoration: line-through; color: gray;" {% endif %}>
+                        {{ task.text }}
+                    </label>
+                    <a href="{{ url_for('delete', index=loop.index0) }}" class="delete-btn">❌</a>
+                </li>
+            {% else %}
+                <li>No tasks yet. Add some above!</li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Update Completed</button>
+    </form>
+</body>
+</html>
